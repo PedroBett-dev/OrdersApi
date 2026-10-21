@@ -2,7 +2,10 @@
 
 date=$(date '+%Y-%m-%d')
 
-git add *
-git reset -q -- '.env' '*.log' 'logs' '.vscode' 2>/dev/null
+# Roda a partir da raiz do repositório, de qualquer diretório
+cd "$(git rev-parse --show-toplevel)" || exit 1
+
+git add .
+git reset -q -- '.env' '*/.env' '*.log' 'logs' '*/logs' '.vscode' 2>/dev/null
 git commit -m "chore: update from ${date}"
 git push

@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS clients;
+DROP TABLE IF EXISTS products;
+DROP FUNCTION IF EXISTS set_updated_at();

@@ -1,0 +1,31 @@
+CREATE OR REPLACE FUNCTION set_updated_at() RETURNS TRIGGER AS $$
+BEGIN
+   NEW.updated_at = CURRENT_TIMESTAMP;
+   RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TABLE IF NOT EXISTS products (
+   id VARCHAR(6) PRIMARY KEY,
+   name VARCHAR(30) NOT NULL,
+   price NUMERIC(10, 2) NOT NULL,
+   status VARCHAR(8) NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'inactive')),
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TRIGGER products_set_updated_at
+   BEFORE UPDATE ON products
+   FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+
+CREATE TABLE IF NOT EXISTS clients (
+   id VARCHAR(6) PRIMARY KEY,
+   name VARCHAR(50) NOT NULL,
+   email VARCHAR(255) NOT NULL UNIQUE,
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TRIGGER clients_set_updated_at
+   BEFORE UPDATE ON clients
+   FOR EACH ROW EXECUTE FUNCTION set_updated_at();
