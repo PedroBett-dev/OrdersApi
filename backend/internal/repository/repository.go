@@ -18,7 +18,7 @@ func InitRepo(cfg config.Config) (*gorm.DB, error) {
 		return nil, err
 	}
 
-	return gorm.Open(postgres.Open(cfg.GetDbDsn()), &gorm.Config{})
+	return gorm.Open(postgres.Open(cfg.GetDbDsn()), &gorm.Config{TranslateError: true})
 }
 
 /*--------------------------------------------------------*/

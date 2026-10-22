@@ -30,4 +30,5 @@ func heathRoutes(r *gin.Engine) {
 /*--------------------------------------------------------*/
 func clientsRoutes(r *gin.Engine, h *handler.ClientHandler) {
 	r.GET("/clients", h.GetAll)
+	r.POST("/clients", h.Create)
 }

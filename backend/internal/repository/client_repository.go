@@ -25,3 +25,12 @@ func (r *ClientRepository) GetAll() ([]entities.Client, error) {
 
 	return clients, nil
 }
+
+/*--------------------------------------------------------*/
+func (r *ClientRepository) Create(client entities.Client) (entities.Client, error) {
+	if err := r.db.Create(&client).Error; err != nil {
+		return entities.Client{}, err
+	}
+
+	return client, nil
+}
