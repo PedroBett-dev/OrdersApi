@@ -24,7 +24,6 @@ type dbConfig struct {
 	sslMode  string
 }
 
-/*--------------------------------------------------------*/
 func InitConfig() Config {
 	_ = godotenv.Load()
 
@@ -34,14 +33,12 @@ func InitConfig() Config {
 	}
 }
 
-/*--------------------------------------------------------*/
 func initApiConfig() apiConfig {
 	return apiConfig{
 		port: getEnvOrDefault("PORT", "8080"),
 	}
 }
 
-/*--------------------------------------------------------*/
 func initDbConfig() dbConfig {
 	return dbConfig{
 		host:     getEnvOrDefault("DB_HOST", "localhost"),
@@ -53,7 +50,6 @@ func initDbConfig() dbConfig {
 	}
 }
 
-/*--------------------------------------------------------*/
 func getEnvOrDefault(key, fallback string) string {
 	value := os.Getenv(key)
 	if value == "" {

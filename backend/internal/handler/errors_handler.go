@@ -10,7 +10,6 @@ import (
 	"github.com/seu-usuario/minha-api/internal/apperror"
 )
 
-/*--------------------------------------------------------*/
 func RespondError(c *gin.Context, err error) {
 	var appErr *apperror.AppError
 	if errors.As(err, &appErr) {

@@ -7,20 +7,26 @@ import (
 )
 
 type Handlers struct {
-	Client *ClientHandler
+	Customer *CustomerHandler
+	Product  *ProductHandler
 }
 
-/*--------------------------------------------------------*/
 func InitHandlers(db *gorm.DB) *Handlers {
 
 	return &Handlers{
-		Client: initClientHandler(db),
+		Customer: initCustomerHandler(db),
+		Product:  initProductHandler(db),
 	}
 }
 
-/*--------------------------------------------------------*/
-func initClientHandler(db *gorm.DB) *ClientHandler {
-	clientRepo := repository.NewClientRepository(db)
-	clientService := service.NewClientService(clientRepo)
-	return NewClientHandler(clientService)
+func initCustomerHandler(db *gorm.DB) *CustomerHandler {
+	customerRepo := repository.NewCustomerRepository(db)
+	customerService := service.NewCustomerService(customerRepo)
+	return NewCustomerHandler(customerService)
+}
+
+func initProductHandler(db *gorm.DB) *ProductHandler {
+	productRepo := repository.NewProductRepository(db)
+	ProductService := service.NewProductService(productRepo)
+	return NewProductHandler(ProductService)
 }

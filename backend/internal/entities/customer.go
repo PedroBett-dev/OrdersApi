@@ -1,11 +1,12 @@
 package entities
 
-type Client struct {
-	Id          string  `json:"id"`
-	Name        string  `json:"name" binding:"required,max=50"`
-	Email       string  `json:"email" binding:"required,max=255"`
-	Cpf         string  `json:"cpf" binding:"required"`
-	PhoneNumber string  `json:"phoneNumber" binding:"required"`
+type Customer struct {
+	Id          string `json:"id"`
+	Name        string `json:"name" binding:"required,max=50"`
+	Email       string `json:"email" binding:"required,max=255"`
+	Cpf         string `json:"cpf" binding:"required"`
+	PhoneNumber string `json:"phoneNumber" binding:"required"`
+	Status      string
 	Address     Address `json:"address" gorm:"embedded" binding:"required"`
 }
 

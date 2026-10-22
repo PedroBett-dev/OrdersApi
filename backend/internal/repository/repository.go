@@ -12,7 +12,6 @@ import (
 	"github.com/seu-usuario/minha-api/internal/config"
 )
 
-/*--------------------------------------------------------*/
 func InitRepo(cfg config.Config) (*gorm.DB, error) {
 	if err := runMigrations(cfg); err != nil {
 		return nil, err
@@ -21,7 +20,6 @@ func InitRepo(cfg config.Config) (*gorm.DB, error) {
 	return gorm.Open(postgres.Open(cfg.GetDbDsn()), &gorm.Config{TranslateError: true})
 }
 
-/*--------------------------------------------------------*/
 func runMigrations(cfg config.Config) error {
 	m, err := migrate.New("file://migrations", cfg.GetDbUrl())
 	if err != nil {

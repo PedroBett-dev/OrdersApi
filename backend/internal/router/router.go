@@ -8,18 +8,17 @@ import (
 	"github.com/seu-usuario/minha-api/internal/handler"
 )
 
-/*--------------------------------------------------------*/
 func InitRoutes(cfg config.Config, handlers *handler.Handlers) *gin.Engine {
 
 	r := gin.Default()
 
 	heathRoutes(r)
-	clientsRoutes(r, handlers.Client)
+	customersRoutes(r, handlers.Customer)
+	productsRoutes(r, handlers.Product)
 
 	return r
 }
 
-/*--------------------------------------------------------*/
 func heathRoutes(r *gin.Engine) {
 
 	r.GET("/health", func(c *gin.Context) {
@@ -27,9 +26,13 @@ func heathRoutes(r *gin.Engine) {
 	})
 }
 
-/*--------------------------------------------------------*/
-func clientsRoutes(r *gin.Engine, h *handler.ClientHandler) {
-	r.GET("/clients", h.GetAll)
-	r.GET("/clients/:id", h.GetById)
-	r.POST("/clients", h.Create)
+func customersRoutes(r *gin.Engine, h *handler.CustomerHandler) {
+	r.GET("/customers", h.GetAll)
+	r.GET("/customers/:id", h.GetById)
+	r.GET("/customers/:id/address", h.GetAddress)
+	r.POST("/customers", h.Create)
+}
+
+func productsRoutes(r *gin.Engine, h *handler.ProductHandler) {
+	r.GET("/products", h.GetAll)
 }
