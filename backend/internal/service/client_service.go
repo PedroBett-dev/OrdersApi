@@ -1,18 +1,20 @@
 package service
 
 import (
-	"crypto/sha256"
-	"encoding/base32"
 	"errors"
+	"strings"
 
 	"github.com/paemuri/brdoc"
 	"gorm.io/gorm"
 
 	"github.com/seu-usuario/minha-api/internal/apperror"
 	"github.com/seu-usuario/minha-api/internal/entities"
+	"github.com/seu-usuario/minha-api/internal/etc"
 )
 
-const idLength = 6
+const (
+	idLength = 6
+)
 
 type clientRepository interface {
 	GetAll() ([]entities.Client, error)
@@ -36,11 +38,32 @@ func (s *ClientService) GetAll() ([]entities.Client, error) {
 /*--------------------------------------------------------*/
 func (s *ClientService) Create(client entities.Client) (entities.Client, error) {
 
+	if !etc.IsEmailValid(client.Email) {
+		return entities.Client{}, apperror.ErrInvalidEmail
+	}
+
+	client.Cpf = etc.OnlyDigits(client.Cpf)
 	if !brdoc.IsCPF(client.Cpf) {
 		return entities.Client{}, apperror.ErrInvalidCpf
 	}
 
-	client.Id = newId(client.Cpf)
+	client.PhoneNumber = etc.OnlyDigits(client.PhoneNumber)
+	if !etc.IsPhoneValid(client.PhoneNumber) {
+		return entities.Client{}, apperror.ErrInvalidPhoneNumber
+	}
+
+	client.Address.State = strings.ToUpper(client.Address.State)
+	uf, ok := etc.ParseUF(client.Address.State)
+	if !ok {
+		return entities.Client{}, apperror.ErrInvalidState
+	}
+
+	client.Address.Cep = etc.OnlyDigits(client.Address.Cep)
+	if !brdoc.IsCEP(client.Address.Cep, uf) {
+		return entities.Client{}, apperror.ErrInvalidCep
+	}
+
+	client.Id = etc.NewId(client.Cpf, idLength)
 
 	created, err := s.repo.Create(client)
 	if errors.Is(err, gorm.ErrDuplicatedKey) {
@@ -51,7 +74,3 @@ func (s *ClientService) Create(client entities.Client) (entities.Client, error) 
 }
 
 /*--------------------------------------------------------*/
-func newId(cpf string) string {
-	sum := sha256.Sum256([]byte(cpf))
-	return base32.StdEncoding.EncodeToString(sum[:])[:idLength]
-}

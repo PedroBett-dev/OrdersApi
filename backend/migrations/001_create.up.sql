@@ -23,6 +23,16 @@ CREATE TABLE IF NOT EXISTS clients (
    name VARCHAR(50) NOT NULL,
    email VARCHAR(255) NOT NULL UNIQUE,
    cpf VARCHAR(11) NOT NULL UNIQUE,
+   phone_number VARCHAR(11) NOT NULL,
+   cep VARCHAR(8) NOT NULL,
+   street VARCHAR(100) NOT NULL,
+   number VARCHAR(10) NOT NULL,
+   complement VARCHAR(50),
+   neighborhood VARCHAR(50) NOT NULL,
+   city VARCHAR(50) NOT NULL,
+   state CHAR(2) NOT NULL,
+
+   status VARCHAR(8) NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'inactive')),
    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
