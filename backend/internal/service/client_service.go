@@ -18,6 +18,7 @@ const (
 
 type clientRepository interface {
 	GetAll() ([]entities.Client, error)
+	GetById(id string) (entities.Client, error)
 	Create(client entities.Client) (entities.Client, error)
 }
 
@@ -30,11 +31,22 @@ func NewClientService(repo clientRepository) *ClientService {
 	return &ClientService{repo: repo}
 }
 
+// GETS
 /*--------------------------------------------------------*/
 func (s *ClientService) GetAll() ([]entities.Client, error) {
 	return s.repo.GetAll()
 }
 
+/*--------------------------------------------------------*/
+func (s *ClientService) GetById(id string) (entities.Client, error) {
+	client, err := s.repo.GetById(id)
+	if err != nil {
+		return entities.Client{}, err
+	}
+	return client, nil
+}
+
+//POST
 /*--------------------------------------------------------*/
 func (s *ClientService) Create(client entities.Client) (entities.Client, error) {
 

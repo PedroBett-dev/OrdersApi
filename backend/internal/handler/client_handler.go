@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 
@@ -11,6 +12,7 @@ import (
 
 type clientService interface {
 	GetAll() ([]entities.Client, error)
+	GetById(id string) (entities.Client, error)
 	Create(client entities.Client) (entities.Client, error)
 }
 
@@ -30,8 +32,17 @@ func (h *ClientHandler) GetAll(c *gin.Context) {
 		RespondError(c, err)
 		return
 	}
-
 	c.JSON(http.StatusOK, clients)
+}
+
+/*--------------------------------------------------------*/
+func (h *ClientHandler) GetById(c *gin.Context) {
+	client, err := h.service.GetById(strings.ToUpper(c.Param("id")))
+	if err != nil {
+		RespondError(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, client)
 }
 
 /*--------------------------------------------------------*/
@@ -41,12 +52,10 @@ func (h *ClientHandler) Create(c *gin.Context) {
 		RespondError(c, apperror.New(http.StatusBadRequest, err.Error()))
 		return
 	}
-
 	created, err := h.service.Create(client)
 	if err != nil {
 		RespondError(c, err)
 		return
 	}
-
 	c.JSON(http.StatusCreated, created)
 }

@@ -1,7 +1,5 @@
 package apperror
 
-import "net/http"
-
 type AppError struct {
 	Status  int
 	Message string
@@ -16,12 +14,3 @@ func New(status int, message string) *AppError {
 func (e *AppError) Error() string {
 	return e.Message
 }
-
-var (
-	ErrInvalidCpf          = New(http.StatusBadRequest, "cpf inválido")
-	ErrInvalidCep          = New(http.StatusBadRequest, "cep inválido")
-	ErrInvalidState        = New(http.StatusBadRequest, "uf inválida")
-	ErrInvalidPhoneNumber  = New(http.StatusBadRequest, "telefone inválido")
-	ErrInvalidEmail        = New(http.StatusBadRequest, "email inválido")
-	ErrClientAlreadyExists = New(http.StatusConflict, "cliente já cadastrado")
-)
