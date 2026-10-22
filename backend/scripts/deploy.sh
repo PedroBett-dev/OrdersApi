@@ -1,6 +1,6 @@
 #!/bin/bash
 
-date=$(date '+%Y-%m-%d')
+date=$(date '+%Y-%m-%d %H:%M:%S')
 
 # Roda a partir da raiz do repositório, de qualquer diretório
 cd "$(git rev-parse --show-toplevel)" || exit 1
